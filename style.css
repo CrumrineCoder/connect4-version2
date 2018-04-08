@@ -130,6 +130,7 @@ button:hover, button:active{
 .popup button{
     margin-top: 5px; 
     width: 80%; 
+    max-width: 450px; 
 }
 
 
