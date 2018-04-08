@@ -10,7 +10,7 @@ function Game() {
     this.status = 0; // 0: running, 1: won, 2: lost, 3: tie
     this.depth = 4; // Search depth
     this.score = 100000, // Win/loss score. 100000 = AI has won, -100000 = Player has won. 
-        this.winning_array = []; // Winning (chips) array
+    this.winning_array = []; // Winning (chips) array
     this.iterations = 0; // Iteration count
 
     this.round = 0; // 0: Human, 1: Computer
@@ -27,6 +27,11 @@ function Game() {
 Game.prototype.init = function () {
     document.getElementById("current-turn-indicator").className = '';
     document.getElementById('winner-indicator').innerHTML = "";
+    document.getElementById('ai-iterations').innerHTML = "?";
+        document.getElementById('ai-time').innerHTML = "?";
+        document.getElementById('ai-column').innerHTML = "?";
+        document.getElementById('ai-score').innerHTML = "?";
+        document.getElementById('game_board').className = "";
     if (that.first) {
         that.round = 0;
     } else {
