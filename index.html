@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="description" content="Artificial Intelligence based on the Minimax- and α-β-Pruning principles.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Connect Four</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+    <div id="main-menu" class="menu">
+        <div class="switch-field" id="gameSelect">
+            <input type="radio" id="singleplayer-mode" name="game-mode-select" onclick="Game.selectMode(1)" class="hidden" checked>
+            <label for="singleplayer-mode">Play Against AI</label>
+            <input type="radio" id="multiplayer-mode" name="game-mode-select" class="hidden" onclick="Game.selectMode(2)">
+            <label for="multiplayer-mode">Local Multiplayer</label>
+            <div class="reveal-if-active">
+                <input type="radio" id="passive" name="difficulty-select" onclick="Game.selectDifficulty(2)" class="require-if-active hidden"
+                    data-require-pair="#singleplayer-mode">
+                <label for="passive">Passive</label>
+                <input type="radio" id="Easy" name="difficulty-select" onclick="Game.selectDifficulty(4)" class=" require-if-active hidden"
+                    data-require-pair="#singleplayer-mode" checked>
+                <label for="Easy">Easy</label>
+                <input type="radio" id="Medium" name="difficulty-select" onclick="Game.selectDifficulty(6)" class=" require-if-active hidden"
+                    data-require-pair="#singleplayer-mode">
+                <label for="Medium">Medium</label>
+                <input type="radio" id="Hard" name="difficulty-select" onclick="Game.selectDifficulty(8)" class=" require-if-active hidden"
+                    data-require-pair="#singleplayer-mode">
+                <label for="Hard">Hard(lags)</label>
+            </div>
+        </div>
+        <div class="switch-field" id="orderSelect">
+            <input type="radio" id="first" name="turn-select" class="hidden" checked>
+            <label for="first">Player 1 goes first</label>
+            <input type="radio" id="second" name="turn-select" class="hidden">
+            <label for="second">Player 1 goes second</label>
+        </div>
+        <div class="switch-field" id="colorSelect">
+            <input type="radio" id="black" name="color-select" class="hidden" checked>
+            <label for="black"> Player 1's chip is red</label>
+            <input type="radio" id="red" name="color-select" class="hidden">
+            <label for="red">Player 1's chip is black</label>
+        </div>
+        <button onclick="Game.init(); toggleMenu();" class="">Start</button>
+    </div>
+    <div id="container" class="hide">
+       
+        <h2 id="winner-indicator"></h2>
+
+        <div class="box-left">
+            <table id="game_board" cellpadding="0"></table>
+            <div id="loading">AI is thinking...</div>
+        </div>
+        <div class="box-right">
+            <button onclick="toggleMenu()" >Back To Main Menu</button>
+            <button onclick="toggleOption()" id="aiDiffButton" type="submit">Change AI Difficulty</button>
+            <div class="popup hide" id="aiDifficulty">
+                <button class="aiDifficulty-option" onclick="Game.restartGame(2)">Easy</button>
+                <button class="aiDifficulty-option" onclick="Game.restartGame(4)">Medium</button>
+                <button class="aiDifficulty-option" onclick="Game.restartGame(6)">Hard</button>
+                <button class="aiDifficulty-option" onclick="Game.restartGame(8)">Hardest</button>
+            </div>
+            <button onclick="Game.restartGame();" type="submit">Restart game</button>
+        
+        <div id="debug" class="hide">
+            <div style="float: left; width: 50%;">
+                <div class="stat">
+                    <h3 id="ai-iterations">?</h3>
+                    <h4>Iterations</h4>
+                </div>
+                <div class="stat">
+                    <h3 id="ai-time">?</h3>
+                    <h4>Time to calculate</h4>
+                </div>
+            </div>
+            <div style="float: right; width: 50%;">
+                <div class="stat">
+                    <h3 id="ai-column">?</h3>
+                    <h4>Column</h4>
+                </div>
+                <div class="stat">
+                    <h3 id="ai-score">?</h3>
+                    <h4>Score</h4>
+                </div>
+            </div>
+            <br style="clear: both" />
+            <h3>Status:
+                <span id="status" class="status-running">running</span>
+            </h3>
+        </div>
+        <div id="current-turn-indicator"></div>
+    </div>
+    </div>
+    </div>
+    <script src="board2.js"></script>
+    <script src="AI.js"></script>
+    <script src="connect-four.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
+        crossorigin="anonymous"></script>
+    <script src="form.js"></script>
+</body>
+
+</html>

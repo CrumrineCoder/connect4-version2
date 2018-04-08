@@ -1,0 +1,319 @@
+/* ENTIRE DOC */
+body {
+    background: #F2AF29;
+    color: #474747;
+    font-family: 'Arial';
+}
+.hide{
+    display: none;
+}
+
+/* Main Menu */
+.menu{
+    background-color: #F2F2DF;
+    box-shadow: 0 2px 10px 0 rgba(0,0,0,.3);
+    padding: 10px 0;
+    width: 310px;
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -100px 0 0 -155px;
+}
+
+/* Main Menu radio buttons */
+.reveal-if-active {
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transform: scale(0.8);
+    transition: 1s;
+    clear: both;
+    margin-left: -10px;
+}
+input[type="radio"]:nth-child(1):checked ~ .reveal-if-active{
+    opacity: 1;
+    overflow: visible;
+}
+
+.switch-field {
+    margin: 0 auto;
+    display: block;
+    font-family: "Lucida Grande", Tahoma, Verdana, sans-serif;
+    padding: 5px;
+    overflow: hidden;
+}
+.switch-field input {
+    position: absolute !important;
+    left: 50%;
+    margin-left: -100px;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    width: 1px;
+    border: 0;
+    overflow: hidden;
+}
+.switch-field label {
+    float: left;
+}
+#gameSelect{
+    margin-left: 30px;
+}
+#orderSelect{
+    margin-left: 15px;
+}
+.switch-field label {
+    background-color: #e4e4e4;
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 14px;
+    font-weight: normal;
+    text-align: center;
+    text-shadow: none;
+    padding: 7px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition: all 0.1s ease-in-out;
+    -ms-transition: all 0.1s ease-in-out;
+    -o-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+}
+.switch-field label:hover, .switch-field label:active {
+    cursor: pointer;
+}
+.switch-field input:checked + label {
+    background-color: #AD343E;
+    color: #E0E0CE;
+}
+.switch-field input:hover + label, .switch-field input:active + label{
+    background-color: #DB424F;
+    color: #E0E0CE;
+}
+.switch-field label:first-of-type {
+    border-radius: 4px 0 0 4px;
+}
+.switch-field label:last-of-type {
+    border-radius: 0 4px 4px 0;
+}
+.reveal-if-active *{
+    display: block;
+}
+
+button{
+    background: #577590;
+    border: none;
+    font-size: 18 px;
+    color: white;
+    padding: 9px 0;
+    width: 90%;
+    cursor: pointer;
+    margin: 0 auto;
+    display: block;
+    max-width: 500px; 
+}
+
+button:hover, button:active{
+    background: #688eaf 
+}
+
+.box-right button{
+    margin-top: 10px;
+}
+.aiDifficulty-option{
+    background-color: #AD343E;
+    color: #E0E0CE;
+}
+.aiDifficulty-option:hover{
+    background-color: #DB424F;
+    color: #E0E0CE;
+}
+
+.popup button{
+    margin-top: 5px; 
+    width: 80%; 
+}
+
+
+/** Board **/
+#current-turn-indicator{
+    width: 50px;
+    height: 50px;
+    margin: 10px auto 0;
+    display: block; 
+}
+
+/* Winner indicator */
+h2{
+    color: white;
+    text-align: center;
+}
+
+
+/* Overflow hidden prevents the highligher from going off the board;
+border collapse keeps the border as boxes instead of circles */
+#game_board {
+    overflow: hidden;
+    border-collapse:collapse;
+    border: 2px solid #7f6d1b;
+    margin: 0 auto;
+}
+/* Game board styling */
+#game_board td {
+    border: 1px dashed #808080;
+    position: relative;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    padding: 10px;
+}
+/* Hover column effect */
+#game_board td:hover::after, #game_board td:active::after{
+    background-color: rgb(240, 184, 73);
+    content: '';
+    height: 10000px;
+    left: 0;
+    position: absolute;
+    top: -5000px;
+    width: 100%;
+    z-index: -1;
+}
+/* Prevents hover on winning pieces from breaking */
+.finished td:hover::after, .finished td:active::after{
+    background-color: transparent !important;
+}
+/* Table styling */
+#game_board .coin {
+    cursor: default;
+}
+#game_board tr {
+    width: 50%;
+    height: 50%;
+}
+/* Coin styling */
+#game_board .black-coin, .black-coin {
+    background: #000000;
+}
+#game_board .red-coin, .red-coin {
+    background: #AD343E;
+}
+/* Winning animation where the pieces flash */
+.win {
+    animation: animationFrames 1s infinite;
+    -webkit-animation: animationFrames 1s infinite;
+    -moz-animation: animationFrames 1s infinite;
+    -o-animation: animationFrames 1s infinite;
+    -ms-animation: animationFrames 1s infinite;
+}
+@keyframes animationFrames{
+    50% {
+        opacity:0.6;
+   }
+    100% {
+        opacity:1;
+   }
+}
+@-moz-keyframes animationFrames{
+    50% {
+        opacity:0.6;
+   }
+    100% {
+        opacity:1;
+   }
+}
+@-webkit-keyframes animationFrames {
+    50% {
+        opacity:0.6;
+   }
+    100% {
+        opacity:1;
+   }
+}
+@-o-keyframes animationFrames {
+    50% {
+        opacity:0.6;
+   }
+    100% {
+        opacity:1;
+   }
+}
+@-ms-keyframes animationFrames {
+    50% {
+        opacity:0.6;
+   }
+    100% {
+        opacity:1;
+   }
+}
+#debug {
+    margin: 10px auto 0;
+    font-size: 14px;
+    background: #E0E0CE;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,.5);
+    box-sizing: border-box;
+    padding: 5px;
+    text-align: center; 
+    max-width: 500px; 
+}
+.stat{
+    width: 50%; 
+    display: inline; 
+}
+.stat h3{
+    font-size: 22px; 
+    margin-bottom: -20px; 
+}
+
+#loading {
+    display: none;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 10px;
+    background: #DC143C;
+    color: #fff;
+    padding: 4px;
+}
+p {
+    margin: 0;
+    padding: 0;
+}
+
+.status-running, .status-won, .status-lost {
+    padding: 0px 2px;
+    color: #333;
+}
+.status-running {
+    background: #ccc;
+}
+.status-won {
+    background: #5FBF5F;
+}
+.status-lost {
+    background: #F36051;
+}
+.status-tie {
+    background: #A4E7F0;
+}
+
+
+@media screen and (min-width: 600px) {
+    #game_board td {
+        width: 30px; 
+        height: 30px; 
+    }
+   
+
+}
+
+@media screen and (min-width: 800px) {
+    .box-left, .box-right{
+        float: left; 
+        width: 50%; 
+    }
+}
+
+@media screen and (min-width: 1000px) {
+    #game_board td {
+        width: 45px; 
+        height: 45px; 
+    }
+}
