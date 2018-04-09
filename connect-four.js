@@ -32,6 +32,7 @@ Game.prototype.init = function () {
         document.getElementById('ai-column').innerHTML = "?";
         document.getElementById('ai-score').innerHTML = "?";
         document.getElementById('game_board').className = "";
+  
     if (that.first) {
         that.round = 0;
     } else {
@@ -112,7 +113,9 @@ Game.prototype.init = function () {
         that.round = that.switchRound(that.round);
         that.generateComputerDecision();
     }
-
+    var html = document.getElementById('status');
+    html.className = "status-running";
+    html.innerHTML = "running";
 }
 
 function toggleMenu() {
@@ -350,6 +353,7 @@ Game.prototype.updateStatus = function () {
         that.status = 3;
         alert("Tie!");
     }
+
     if(that.mode == 1){
         var html = document.getElementById('status');
         if (that.status == 0) {
