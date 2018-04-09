@@ -12,6 +12,8 @@
 
 <body>
     <div id="main-menu" class="menu">
+        <h1> Connect Four </h1>
+        <h5>Select your preferences</h5>
         <div class="switch-field" id="gameSelect">
             <input type="radio" id="singleplayer-mode" name="game-mode-select" onclick="Game.selectMode(1)" class="hidden" checked>
             <label for="singleplayer-mode">Play Against AI</label>
@@ -44,6 +46,7 @@
             <input type="radio" id="red" name="color-select" class="hidden">
             <label for="red">Player 1's chip is black</label>
         </div>
+        <br />
         <button onclick="Game.init(); toggleMenu();" class="">Start</button>
     </div>
     <div id="container" class="hide">
