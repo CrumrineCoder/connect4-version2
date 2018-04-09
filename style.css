@@ -45,12 +45,7 @@ input[type="radio"]:nth-child(1):checked ~ .reveal-if-active{
 }
 .switch-field input {
     position: absolute !important;
-    left: 50%;
-    margin-left: -100px;
-    clip: rect(0, 0, 0, 0);
-    height: 1px;
     width: 1px;
-    border: 0;
     overflow: hidden;
 }
 .switch-field label {
