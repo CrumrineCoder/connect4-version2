@@ -46,8 +46,6 @@ Board.prototype.isFinished = function (depth, score) {
  * @return {boolean} 
  */
 Board.prototype.place = function (column) {
-    console.log(this.field);
-    console.log("Place player: " + this.player);
     // Check if column valid
     // 1. not empty 2. not exceeding the board size
     if (this.field[0][column] == null && column >= 0 && column < this.columns) {

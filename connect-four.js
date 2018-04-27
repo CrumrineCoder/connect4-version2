@@ -10,7 +10,7 @@ function Game() {
     this.status = 0; // 0: running, 1: won, 2: lost, 3: tie
     this.depth = 4; // Search depth
     this.score = 100000, // Win/loss score. 100000 = AI has won, -100000 = Player has won. 
-    this.winning_array = []; // Winning (chips) array
+        this.winning_array = []; // Winning (chips) array
     this.iterations = 0; // Iteration count
 
     this.round = 0; // 0: Human, 1: Computer
@@ -24,19 +24,10 @@ function Game() {
 /**
  * Start a new game function
  */
-    // Set variables based on the start menu. 
-   
+// Set variables based on the start menu. 
 
-Game.prototype.restartGameOver = function(){
-    // Swap the players (player 2 will go first but will still be their color, and player 1 will go second)
-    // Clear the game board and add act
-}
-
-Game.prototype.restartSettingChange = function(){
-    // Clear the game board and add act
-}
-
-Game.prototype.generateGame = function(){
+Game.prototype.generateGame = function () {
+    document.getElementById("current-turn-indicator").className = '';
     // Clear the game board and add act
     // Check for preferences and change settings
     if (document.getElementById('first').checked) {
@@ -52,12 +43,11 @@ Game.prototype.generateGame = function(){
     }
 
     if (that.first) {
-        this.round = that.round; 
-        
+        this.round = that.round;
     } else {
-        this.round = that.switchRound(that.round); 
+        this.round = that.switchRound(that.round);
     }
-    
+
     this.board = new Board(this, [], this.round);
     this.board.createBoard();
     this.createVisualBoard();
@@ -66,42 +56,47 @@ Game.prototype.generateGame = function(){
     if (that.mode == 1) {
         this.AI = new AI(this);
     } else {
-        if (that.round == 0) {
-            if (that.color == 0) {
-                document.getElementById("current-turn-indicator").className = 'coin black-coin';
-            } else {
-                document.getElementById("current-turn-indicator").className = 'coin red-coin';
-            }
-
-        }
-        else if (that.round == 2) {
-            if (that.color == 0) {
-                document.getElementById("current-turn-indicator").className = 'coin red-coin';
-            } else {
-                document.getElementById("current-turn-indicator").className = 'coin black-coin';
-            }
-        }
+        this.resetTurnIndicator();
     }
 
     this.checkForComputerFirstMove();
     this.resetStatus();
+    this.resetVisuals();
 }
 
-Game.prototype.checkForComputerFirstMove = function(){
+Game.prototype.checkForComputerFirstMove = function () {
     if (!that.first && that.mode == 1) {
         that.round = that.switchRound(that.round);
         that.generateComputerDecision();
     }
 }
 
-Game.prototype.resetStatus = function(){
+Game.prototype.resetStatus = function () {
+    that.status = 0;
     var html = document.getElementById('status');
     html.className = "status-running";
     html.innerHTML = "running";
 }
 
-Game.prototype.resetVisuals = function(){
-    document.getElementById("current-turn-indicator").className = '';
+Game.prototype.resetTurnIndicator = function () {
+    if (that.round == 0) {
+        if (that.color == 0) {
+            document.getElementById("current-turn-indicator").className = 'coin black-coin';
+        } else {
+            document.getElementById("current-turn-indicator").className = 'coin red-coin';
+        }
+    }
+    else if (that.round == 2) {
+        if (that.color == 0) {
+            document.getElementById("current-turn-indicator").className = 'coin red-coin';
+        } else {
+            document.getElementById("current-turn-indicator").className = 'coin black-coin';
+        }
+    }
+}
+
+Game.prototype.resetVisuals = function () {
+   
     document.getElementById('winner-indicator').innerHTML = "";
     document.getElementById('ai-iterations').innerHTML = "?";
     document.getElementById('ai-time').innerHTML = "?";
@@ -113,7 +108,7 @@ Game.prototype.resetVisuals = function(){
 /*
 *
 */
-Game.prototype.createVisualBoard = function(){
+Game.prototype.createVisualBoard = function () {
     var game_board = "";
     for (var i = 0; i < this.board.rows; i++) {
         game_board += "<tr>";
@@ -138,68 +133,6 @@ Game.prototype.createVisualBoard = function(){
     }
 }
 
-
-Game.prototype.init = function () {
-    // Reset the game board 
-    document.getElementById("current-turn-indicator").className = '';
-    document.getElementById('winner-indicator').innerHTML = "";
-    document.getElementById('ai-iterations').innerHTML = "?";
-    document.getElementById('ai-time').innerHTML = "?";
-    document.getElementById('ai-column').innerHTML = "?";
-    document.getElementById('ai-score').innerHTML = "?";
-    document.getElementById('game_board').className = "";
-  
-    /*
-    if (that.first) {
-        that.round = 0;
-    } else {
-        if (that.mode == 2) {
-            that.round = 2;
-        }
-    }
-    */
-
-    //   document.getElementById("turn-display").innerHTML = "";
-
-    // Create from board object (see board.js)
-    // If the player is going first, load it with the local round var. If not, swap it. 
-    if (that.first) {
-        this.round = that.round; 
-        
-    } else {
-        this.round = that.switchRound(that.round); 
-    }
-    
-    console.log("Player after: " + this.round);
-    // This fills in a 2d board var with null for every column and row in the board object.
-    this.board.createBoard();
-    // Only if the game is Human vs AI will we load in an AI object. Otherwise we'll show a turn indicator, which isn't needed in single player because it will always be the player's turn. 
-    if (that.mode == 1) {
-        this.AI = new AI(this);
-    } else {
-        if (that.round == 0) {
-            if (that.color == 0) {
-                document.getElementById("current-turn-indicator").className = 'coin black-coin';
-            } else {
-                document.getElementById("current-turn-indicator").className = 'coin red-coin';
-            }
-
-        }
-        else if (that.round == 2) {
-            if (that.color == 0) {
-                document.getElementById("current-turn-indicator").className = 'coin red-coin';
-            } else {
-                document.getElementById("current-turn-indicator").className = 'coin black-coin';
-            }
-        }
-    }
-    // Create the visual board HTMl to be shown to the player 
-   
-
-    // If the game is Human vs AI and the player is going second, then go an AI move before the player's first move. 
- 
-}
-
 function toggleMenu() {
     $("#main-menu").toggleClass("hide");
     $("#container").toggleClass("hide");
@@ -213,11 +146,11 @@ function toggleMenu() {
     }
 }
 
-function toggleOption(){
+function toggleOption() {
     $("#aiDifficulty").toggleClass("hide");
 }
 
-function hideOptions(){
+function hideOptions() {
     $("#aiDifficulty").addClass("hide");
 }
 
@@ -237,7 +170,7 @@ Game.prototype.selectMode = function (mode) {
  * @param {number} color
  */
 //Game.prototype.selectColor = function (color) {
-  //  this.color = color;
+//  this.color = color;
 //}
 
 /**
@@ -246,7 +179,7 @@ Game.prototype.selectMode = function (mode) {
  * @param {boolean} first
  */
 //Game.prototype.selectTurn = function (first) {
- //   this.first = first;
+//   this.first = first;
 //}
 
 
@@ -286,7 +219,7 @@ Game.prototype.act = function (e) {
 
         // Computer round
         if (that.round == 1) that.generateComputerDecision();
-    } else{
+    } else {
         if (that.round == 0) {
             document.getElementById("current-turn-indicator").className = 'coin red-coin';
             //      document.getElementById().innerHTML = "First player's  turn";
@@ -373,8 +306,8 @@ Game.prototype.generateComputerDecision = function () {
             that.place(ai_move[0]);
 
             // Debug
-            document.getElementById('ai-column').innerHTML =  parseInt(ai_move[0] + 1);
-            document.getElementById('ai-score').innerHTML =  ai_move[1];
+            document.getElementById('ai-column').innerHTML = parseInt(ai_move[0] + 1);
+            document.getElementById('ai-score').innerHTML = ai_move[1];
             document.getElementById('ai-iterations').innerHTML = that.iterations;
 
             // Remove loading message
@@ -394,10 +327,10 @@ Game.prototype.updateStatus = function () {
         that.markWin();
         if (that.mode == 2) {
             document.getElementById('winner-indicator').innerHTML = "Player 1 Won!";
-      //      alert("Player 1 Has Won!");
+            //      alert("Player 1 Has Won!");
         } else {
             document.getElementById('winner-indicator').innerHTML = "You Won!";
-      //      alert("You have won!");
+            //      alert("You have won!");
         }
     }
 
@@ -407,10 +340,10 @@ Game.prototype.updateStatus = function () {
         that.markWin();
         if (that.mode == 2) {
             document.getElementById('winner-indicator').innerHTML = "Player 2 Won!";
-      //      alert("Player 2 Has Won!");
+            //      alert("Player 2 Has Won!");
         } else {
             document.getElementById('winner-indicator').innerHTML = "You lost.";
-     //       alert("You have lost!");
+            //       alert("You have lost!");
         }
     }
 
@@ -436,7 +369,7 @@ Game.prototype.updateStatus = function () {
         alert("Tie!");
     }
 
-    if(that.mode == 1){
+    if (that.mode == 1) {
         var html = document.getElementById('status');
         if (that.status == 0) {
             html.className = "status-running";
@@ -472,37 +405,32 @@ Game.prototype.markWin = function () {
 Game.prototype.restartGame = function (depth) {
     // Get confirmation from the player that they want to restart the game for real
     if (confirm('Game is going to be restarted.\nAre you sure?')) {
-        if(arguments.length != 0){
+        console.log("First: " + that.first);
+        console.log("Board Player: " + this.board.player);
+        console.log("Player: " + that.round);
+    
+        console.log("Board Player: " + this.board.player);
+        console.log("Player: " + that.round);
+        if (arguments.length != 0) {
             that.selectDifficulty(depth);
-   
-        //    that.depth = depth; 
         }
         hideOptions();
-        document.getElementById('winner-indicator').innerHTML = "";
-        that.status = 0;
-        that.first = !that.first;
-     //   that.board.player = this.switchRound;
-     //   var depth = difficulty.options[difficulty.selectedIndex].value;
-    //    that.depth = depth;
-        // Initialize a new  Game Object
-        that.init();
-        // Reset debug messages
-        document.getElementById('ai-iterations').innerHTML = "?";
-        document.getElementById('ai-time').innerHTML = "?";
-        document.getElementById('ai-column').innerHTML = "?";
-        document.getElementById('ai-score').innerHTML = "?";
-        document.getElementById('game_board').className = "";
-        // Update status of the game
-        that.updateStatus();
+        this.board.createBoard();
+        this.createVisualBoard();
+        this.resetStatus();
+        this.resetVisuals();
+        this.checkForComputerFirstMove();
+        console.log("First: " + that.first);
+        console.log("Board Player: " + this.board.player);
+        console.log("Player: " + that.round);
     }
 }
 
 // Start a new game on load (even though the game hasn't starter yet, this object still handles the buttons to set up the game even though it's technically not been initationed by Game.init() )
 function Start() {
-    
     window.Game = new Game();
 }
 
 window.onload = function () {
-    Start()
+    Start();
 };
