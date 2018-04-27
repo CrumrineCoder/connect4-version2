@@ -53,15 +53,20 @@ Game.prototype.init = function () {
         this.color = 1;
     }
 
+    console.log("First: " + this.first);
+    console.log("Player: " + this.round)
     //   document.getElementById("turn-display").innerHTML = "";
 
     // Create from board object (see board.js)
     // If the player is going first, load it with the local round var. If not, swap it. 
     if (that.first) {
-        this.board = new Board(this, [], that.round);
+        this.round = that.round; 
+        
     } else {
-        this.board = new Board(this, [], that.switchRound(that.round));
+        this.round = that.switchRound(that.round); 
     }
+    this.board = new Board(this, [], this.round);
+    console.log("Player after: " + this.round)
     // This fills in a 2d board var with null for every column and row in the board object.
     this.board.createBoard();
     // Only if the game is Human vs AI will we load in an AI object
