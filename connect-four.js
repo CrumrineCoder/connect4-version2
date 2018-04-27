@@ -25,6 +25,20 @@ function Game() {
  * Start a new game function
  */
     // Set variables based on the start menu. 
+   
+
+Game.prototype.restartGameOver = function(){
+    // Swap the players (player 2 will go first but will still be their color, and player 1 will go second)
+    // Clear the game board and add act
+}
+
+Game.prototype.restartSettingChange = function(){
+    // Clear the game board and add act
+}
+
+Game.prototype.generateGame = function(){
+    // Clear the game board and add act
+    // Check for preferences and change settings
     if (document.getElementById('first').checked) {
         this.first = true;
     } else {
@@ -36,20 +50,93 @@ function Game() {
     } else {
         this.color = 1;
     }
-    this.board = new Board(this, [], this.round);
 
-Game.prototype.restartGameOver = function(){
-    // Swap the players (player 2 will go first but will still be their color, and player 1 will go second)
-    // Clear the game board and add act
+    if (that.first) {
+        this.round = that.round; 
+        
+    } else {
+        this.round = that.switchRound(that.round); 
+    }
+    
+    this.board = new Board(this, [], this.round);
+    this.board.createBoard();
+    this.createVisualBoard();
+
+    // Only if the game is Human vs AI will we load in an AI object
+    if (that.mode == 1) {
+        this.AI = new AI(this);
+    } else {
+        if (that.round == 0) {
+            if (that.color == 0) {
+                document.getElementById("current-turn-indicator").className = 'coin black-coin';
+            } else {
+                document.getElementById("current-turn-indicator").className = 'coin red-coin';
+            }
+
+        }
+        else if (that.round == 2) {
+            if (that.color == 0) {
+                document.getElementById("current-turn-indicator").className = 'coin red-coin';
+            } else {
+                document.getElementById("current-turn-indicator").className = 'coin black-coin';
+            }
+        }
+    }
+
+    this.checkForComputerFirstMove();
+    this.resetStatus();
 }
 
-Game.prototype.restartSettingChange = function(){
-    // Clear the game board and add act
+Game.prototype.checkForComputerFirstMove = function(){
+    if (!that.first && that.mode == 1) {
+        that.round = that.switchRound(that.round);
+        that.generateComputerDecision();
+    }
+}
+
+Game.prototype.resetStatus = function(){
+    var html = document.getElementById('status');
+    html.className = "status-running";
+    html.innerHTML = "running";
+}
+
+Game.prototype.resetVisuals = function(){
+    document.getElementById("current-turn-indicator").className = '';
+    document.getElementById('winner-indicator').innerHTML = "";
+    document.getElementById('ai-iterations').innerHTML = "?";
+    document.getElementById('ai-time').innerHTML = "?";
+    document.getElementById('ai-column').innerHTML = "?";
+    document.getElementById('ai-score').innerHTML = "?";
+    document.getElementById('game_board').className = "";
 }
 // Commands all of these need:
 /*
 *
 */
+Game.prototype.createVisualBoard = function(){
+    var game_board = "";
+    for (var i = 0; i < this.board.rows; i++) {
+        game_board += "<tr>";
+        for (var j = 0; j < this.board.columns; j++) {
+            game_board += "<td class='empty'></td>";
+        }
+        game_board += "</tr>";
+    }
+    // Add the board to the DOM
+    document.getElementById('game_board').innerHTML = game_board;
+
+    // Action listener var
+    var td = document.getElementById('game_board').getElementsByTagName("td");
+
+    // Add the 'act' function to each space in the table 
+    for (var i = 0; i < td.length; i++) {
+        if (td[i].addEventListener) {
+            td[i].addEventListener('click', that.act, false);
+        } else if (td[i].attachEvent) {
+            td[i].attachEvent('click', that.act)
+        }
+    }
+}
 
 
 Game.prototype.init = function () {
@@ -107,37 +194,10 @@ Game.prototype.init = function () {
         }
     }
     // Create the visual board HTMl to be shown to the player 
-    var game_board = "";
-    for (var i = 0; i < this.board.rows; i++) {
-        game_board += "<tr>";
-        for (var j = 0; j < this.board.columns; j++) {
-            game_board += "<td class='empty'></td>";
-        }
-        game_board += "</tr>";
-    }
-    // Add the board to the DOM
-    document.getElementById('game_board').innerHTML = game_board;
-
-    // Action listener var
-    var td = document.getElementById('game_board').getElementsByTagName("td");
-
-    // Add the 'act' function to each space in the table 
-    for (var i = 0; i < td.length; i++) {
-        if (td[i].addEventListener) {
-            td[i].addEventListener('click', that.act, false);
-        } else if (td[i].attachEvent) {
-            td[i].attachEvent('click', that.act)
-        }
-    }
+   
 
     // If the game is Human vs AI and the player is going second, then go an AI move before the player's first move. 
-    if (!that.first && that.mode == 1) {
-        that.round = that.switchRound(that.round);
-        that.generateComputerDecision();
-    }
-    var html = document.getElementById('status');
-    html.className = "status-running";
-    html.innerHTML = "running";
+ 
 }
 
 function toggleMenu() {
