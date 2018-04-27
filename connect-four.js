@@ -24,23 +24,7 @@ function Game() {
 /**
  * Start a new game function
  */
-Game.prototype.init = function () {
-    document.getElementById("current-turn-indicator").className = '';
-    document.getElementById('winner-indicator').innerHTML = "";
-    document.getElementById('ai-iterations').innerHTML = "?";
-        document.getElementById('ai-time').innerHTML = "?";
-        document.getElementById('ai-column').innerHTML = "?";
-        document.getElementById('ai-score').innerHTML = "?";
-        document.getElementById('game_board').className = "";
-  
-    if (that.first) {
-        that.round = 0;
-    } else {
-        if (that.mode == 2) {
-            that.round = 2;
-        }
-    }
-
+    // Set variables based on the start menu. 
     if (document.getElementById('first').checked) {
         this.first = true;
     } else {
@@ -52,9 +36,42 @@ Game.prototype.init = function () {
     } else {
         this.color = 1;
     }
+    this.board = new Board(this, [], this.round);
 
-    console.log("First: " + this.first);
-    console.log("Player: " + this.round)
+Game.prototype.restartGameOver = function(){
+    // Swap the players (player 2 will go first but will still be their color, and player 1 will go second)
+    // Clear the game board and add act
+}
+
+Game.prototype.restartSettingChange = function(){
+    // Clear the game board and add act
+}
+// Commands all of these need:
+/*
+*
+*/
+
+
+Game.prototype.init = function () {
+    // Reset the game board 
+    document.getElementById("current-turn-indicator").className = '';
+    document.getElementById('winner-indicator').innerHTML = "";
+    document.getElementById('ai-iterations').innerHTML = "?";
+    document.getElementById('ai-time').innerHTML = "?";
+    document.getElementById('ai-column').innerHTML = "?";
+    document.getElementById('ai-score').innerHTML = "?";
+    document.getElementById('game_board').className = "";
+  
+    /*
+    if (that.first) {
+        that.round = 0;
+    } else {
+        if (that.mode == 2) {
+            that.round = 2;
+        }
+    }
+    */
+
     //   document.getElementById("turn-display").innerHTML = "";
 
     // Create from board object (see board.js)
@@ -65,11 +82,11 @@ Game.prototype.init = function () {
     } else {
         this.round = that.switchRound(that.round); 
     }
-    this.board = new Board(this, [], this.round);
-    console.log("Player after: " + this.round)
+    
+    console.log("Player after: " + this.round);
     // This fills in a 2d board var with null for every column and row in the board object.
     this.board.createBoard();
-    // Only if the game is Human vs AI will we load in an AI object
+    // Only if the game is Human vs AI will we load in an AI object. Otherwise we'll show a turn indicator, which isn't needed in single player because it will always be the player's turn. 
     if (that.mode == 1) {
         this.AI = new AI(this);
     } else {
@@ -404,7 +421,7 @@ Game.prototype.restartGame = function (depth) {
         document.getElementById('winner-indicator').innerHTML = "";
         that.status = 0;
         that.first = !that.first;
-        that.board.player = this.switchRound;
+     //   that.board.player = this.switchRound;
      //   var depth = difficulty.options[difficulty.selectedIndex].value;
     //    that.depth = depth;
         // Initialize a new  Game Object
