@@ -96,7 +96,7 @@ Game.prototype.resetTurnIndicator = function () {
 }
 
 Game.prototype.resetVisuals = function () {
-   
+
     document.getElementById('winner-indicator').innerHTML = "";
     document.getElementById('ai-iterations').innerHTML = "?";
     document.getElementById('ai-time').innerHTML = "?";
@@ -216,21 +216,23 @@ Game.prototype.act = function (e) {
         that.place(element.cellIndex);
     }
     if (that.mode == 1) {
-
         // Computer round
         if (that.round == 1) that.generateComputerDecision();
     } else {
-        if (that.round == 0) {
-            document.getElementById("current-turn-indicator").className = 'coin red-coin';
-            //      document.getElementById().innerHTML = "First player's  turn";
-        }
-        else if (that.round == 2) {
-            document.getElementById("current-turn-indicator").className = 'coin black-coin';
-            //      document.getElementById("current-turn-indicator").innerHTML = "Second player's  turn";
-        }
+        that.updateTurnIndicator();
     }
 }
 
+Game.prototype.updateTurnIndicator = function(){
+    if (that.round == 0) {
+        document.getElementById("current-turn-indicator").className = 'coin red-coin';
+        //      document.getElementById().innerHTML = "First player's  turn";
+    }
+    else if (that.round == 2) {
+        document.getElementById("current-turn-indicator").className = 'coin black-coin';
+        //      document.getElementById("current-turn-indicator").innerHTML = "Second player's  turn";
+    }
+}
 /**
  * Visually place a piece on the board. 
  *
@@ -270,11 +272,18 @@ Game.prototype.place = function (column) {
             return alert("Invalid move!");
         }
 
+         // Update the status of the game. 
+         that.updateStatus();
+
+         if (that.board.score() == that.score || that.board.score() == -that.score || !that.board.isFull()) {
+            console.log("bird");
+        } else{
+            console.log("log");
+        }
         // Swap Rounds
         that.round = that.switchRound(that.round);
 
-        // Update the status of the game. 
-        that.updateStatus();
+       
     }
 }
 
@@ -327,11 +336,14 @@ Game.prototype.updateStatus = function () {
         that.markWin();
         if (that.mode == 2) {
             document.getElementById('winner-indicator').innerHTML = "Player 1 Won!";
+            // Swap Rounds
+            that.round = that.switchRound(that.round);
             //      alert("Player 1 Has Won!");
         } else {
             document.getElementById('winner-indicator').innerHTML = "You Won!";
             //      alert("You have won!");
         }
+        
     }
 
     // Computer won
@@ -340,6 +352,8 @@ Game.prototype.updateStatus = function () {
         that.markWin();
         if (that.mode == 2) {
             document.getElementById('winner-indicator').innerHTML = "Player 2 Won!";
+             // Swap Rounds
+             that.round = that.switchRound(that.round);
             //      alert("Player 2 Has Won!");
         } else {
             document.getElementById('winner-indicator').innerHTML = "You lost.";
@@ -365,8 +379,12 @@ Game.prototype.updateStatus = function () {
       } */
     // Tie
     if (that.board.isFull()) {
+        if(that.mode == 2){
+             // Swap Rounds
+             that.round = that.switchRound(that.round);
+        }
         that.status = 3;
-        alert("Tie!");
+        document.getElementById('winner-indicator').innerHTML = "Tie!";
     }
 
     if (that.mode == 1) {
@@ -408,7 +426,23 @@ Game.prototype.restartGame = function (depth) {
         console.log("First: " + that.first);
         console.log("Board Player: " + this.board.player);
         console.log("Player: " + that.round);
-    
+      /*  that.first = !that.first;
+        if (that.first) {
+            this.board.player = that.round;
+        } else {
+            this.board.player = that.switchRound(that.round);
+            that.round = that.switchRound(that.round);
+        }*/
+        if(confirm('Would you like to swap turns? If Player 1 was first, agreeing would make he or her second.')){
+        //    that.first = !that.first;
+            if (that.first) {
+                this.board.player = that.round;
+            } else {
+                this.board.player = that.switchRound(that.round);
+                that.round = that.switchRound(that.round);
+            }
+        }
+      
         console.log("Board Player: " + this.board.player);
         console.log("Player: " + that.round);
         if (arguments.length != 0) {
@@ -420,6 +454,7 @@ Game.prototype.restartGame = function (depth) {
         this.resetStatus();
         this.resetVisuals();
         this.checkForComputerFirstMove();
+        this.updateTurnIndicator();
         console.log("First: " + that.first);
         console.log("Board Player: " + this.board.player);
         console.log("Player: " + that.round);
