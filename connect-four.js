@@ -13,7 +13,7 @@ function Game() {
     this.winning_array = []; // Winning (chips) array
     this.iterations = 0; // Iteration count
 
-    this.round = 0; // 0: Human, 1: Computer
+    this.round = 0; // 0: First human player, 1: Computer, 2: Second human player
     this.mode = 1; // 1: Human vs AI, 2: Human vs Human
     this.color = 1; // 0: Black = player 1, red = player 2 / AI; 1: vice versa.
     this.first = true; // true if player 1 is going first, false if the AI/Player 2 is going first
@@ -42,6 +42,7 @@ Game.prototype.generateGame = function () {
         this.color = 1;
     }
 
+    console.log(this.round);
     if (that.first) {
         this.round = 0;
     } else {
@@ -51,7 +52,7 @@ Game.prototype.generateGame = function () {
           this.round = 2;
         }
     }
-
+    console.log(this.round);
     this.board = new Board(this, [], this.round);
     this.board.createBoard();
     this.createVisualBoard();
@@ -69,8 +70,10 @@ Game.prototype.generateGame = function () {
 }
 
 Game.prototype.checkForComputerFirstMove = function () {
+    console.log(that.first);
+    console.log(that.mode);
     if (!that.first && that.mode == 1) {
-        that.round = that.switchRound(that.round);
+        that.round = 1; 
         that.generateComputerDecision();
     }
 }
@@ -256,6 +259,7 @@ Game.prototype.place = function (column) {
                         document.getElementById('game_board').rows[y].cells[column].className = 'coin red-coin';
                     }
                 }
+                console.log(this.board.field);
                 // Break from loop after inserting
                 break;
             }
@@ -269,11 +273,6 @@ Game.prototype.place = function (column) {
          // Update the status of the game. 
          that.updateStatus();
 
-         if (that.board.score() == that.score || that.board.score() == -that.score || !that.board.isFull()) {
-            console.log("bird");
-        } else{
-            console.log("log");
-        }
         // Swap Rounds
         that.round = that.switchRound(that.round);
 
@@ -417,18 +416,8 @@ Game.prototype.markWin = function () {
 Game.prototype.restartGame = function (depth) {
     // Get confirmation from the player that they want to restart the game for real
     if (confirm('Game is going to be restarted.\nAre you sure?')) {
-        console.log("First: " + that.first);
-        console.log("Board Player: " + this.board.player);
-        console.log("Player: " + that.round);
-      /*  that.first = !that.first;
-        if (that.first) {
-            this.board.player = that.round;
-        } else {
-            this.board.player = that.switchRound(that.round);
-            that.round = that.switchRound(that.round);
-        }*/
         if(confirm('Would you like to swap turns? If Player 1 was first, agreeing would make he or her second.')){
-        //    that.first = !that.first;
+            that.first = !that.first;
             if (that.first) {
                 this.board.player = that.round;
             } else {
@@ -436,9 +425,6 @@ Game.prototype.restartGame = function (depth) {
                 that.round = that.switchRound(that.round);
             }
         }
-      
-        console.log("Board Player: " + this.board.player);
-        console.log("Player: " + that.round);
         if (arguments.length != 0) {
             that.selectDifficulty(depth);
         }
@@ -449,9 +435,6 @@ Game.prototype.restartGame = function (depth) {
         this.resetVisuals();
         this.checkForComputerFirstMove();
         this.updateTurnIndicator();
-        console.log("First: " + that.first);
-        console.log("Board Player: " + this.board.player);
-        console.log("Player: " + that.round);
     }
 }
 
