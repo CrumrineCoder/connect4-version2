@@ -27,22 +27,20 @@ function Game() {
 // Set variables based on the start menu. 
 
 Game.prototype.generateGame = function () {
+    // Clear the turn indicator
     document.getElementById("current-turn-indicator").className = '';
-    // Clear the game board and add act
-    // Check for preferences and change settings
+    // Update preferences based on main manu
     if (document.getElementById('first').checked) {
         this.first = true;
     } else {
         this.first = false;
     }
-
     if (document.getElementById('red').checked) {
         this.color = 0;
     } else {
         this.color = 1;
     }
-
-    console.log(this.round);
+    // Reset the round based on the above settings
     if (that.first) {
         this.round = 0;
     } else {
@@ -52,32 +50,36 @@ Game.prototype.generateGame = function () {
           this.round = 2;
         }
     }
-    console.log(this.round);
+    // Create a new board object
     this.board = new Board(this, [], this.round);
+    // Fill in the board object's field with an empty 2D array
     this.board.createBoard();
+    // Create the visual board the user can interact with to influence the board object
     this.createVisualBoard();
 
     // Only if the game is Human vs AI will we load in an AI object
     if (that.mode == 1) {
         this.AI = new AI(this);
     } else {
+        // Only in single player do we need the turn indicator
         this.updateTurnIndicator();
     }
-
+    // This will check if it's a single player game and if the AI will be going first, and if so make a move
     this.checkForComputerFirstMove();
+    // Reset all the previous stuff that may've been from a previous round if the user changed the preferences and made a new game. 
     this.resetStatus();
     this.resetVisuals();
 }
 
 Game.prototype.checkForComputerFirstMove = function () {
-    console.log(that.first);
-    console.log(that.mode);
+    // If the player is going second and it's a single player game, then the AI makes its opening move. 
     if (!that.first && that.mode == 1) {
         that.round = 1; 
         that.generateComputerDecision();
     }
 }
 
+// Reset the visual status to running
 Game.prototype.resetStatus = function () {
     that.status = 0;
     var html = document.getElementById('status');
@@ -85,9 +87,8 @@ Game.prototype.resetStatus = function () {
     html.innerHTML = "running";
 }
 
-
+// Clear the visual board and everything on it - except for the turn indicator. 
 Game.prototype.resetVisuals = function () {
-
     document.getElementById('winner-indicator').innerHTML = "";
     document.getElementById('ai-iterations').innerHTML = "?";
     document.getElementById('ai-time').innerHTML = "?";
@@ -95,10 +96,8 @@ Game.prototype.resetVisuals = function () {
     document.getElementById('ai-score').innerHTML = "?";
     document.getElementById('game_board').className = "";
 }
-// Commands all of these need:
-/*
-*
-*/
+
+// Create the visual game board for the player to interact with
 Game.prototype.createVisualBoard = function () {
     var game_board = "";
     for (var i = 0; i < this.board.rows; i++) {
@@ -124,10 +123,12 @@ Game.prototype.createVisualBoard = function () {
     }
 }
 
+// Toggle the main menu
 function toggleMenu() {
     $("#main-menu").toggleClass("hide");
     $("#container").toggleClass("hide");
     hideOptions();
+    // Determines if we show the difficulty and debug menus
     if (this.Game.mode == 1) {
         $("#aiDiffButton").removeClass("hide");
         $("#debug").removeClass("hide");
@@ -137,10 +138,11 @@ function toggleMenu() {
     }
 }
 
+// Toggle AI Difficulty menu
 function toggleOption() {
     $("#aiDifficulty").toggleClass("hide");
 }
-
+// Hide  the AI Difficulty menu
 function hideOptions() {
     $("#aiDifficulty").addClass("hide");
 }
@@ -269,12 +271,13 @@ Game.prototype.place = function (column) {
         if (!that.board.place(column)) {
             return alert("Invalid move!");
         }
+        // Swap Rounds
+        that.round = that.switchRound(that.round);
 
          // Update the status of the game. 
          that.updateStatus();
 
-        // Swap Rounds
-        that.round = that.switchRound(that.round);
+      
 
        
     }
@@ -330,7 +333,12 @@ Game.prototype.updateStatus = function () {
         if (that.mode == 2) {
             document.getElementById('winner-indicator').innerHTML = "Player 1 Won!";
             // Swap Rounds
+            console.log("Game won 1: " + that.round);
+            console.log("Board won 1: " + that.board.player);
             that.round = that.switchRound(that.round);
+            that.board.player = that.round;
+            console.log("Game won 2: " + that.round);
+            console.log("Board won 2: " + that.board.player);
             //      alert("Player 1 Has Won!");
         } else {
             document.getElementById('winner-indicator').innerHTML = "You Won!";
@@ -345,36 +353,29 @@ Game.prototype.updateStatus = function () {
         that.markWin();
         if (that.mode == 2) {
             document.getElementById('winner-indicator').innerHTML = "Player 2 Won!";
+            console.log("Game won 1: " + that.round);
+            console.log("Board won 1: " + that.board.player);
              // Swap Rounds
              that.round = that.switchRound(that.round);
+             that.board.player = that.round;
+             console.log("Game won 2: " + that.round);
+             console.log("Board won 2: " + that.board.player);
             //      alert("Player 2 Has Won!");
         } else {
             document.getElementById('winner-indicator').innerHTML = "You lost.";
             //       alert("You have lost!");
         }
     }
-
-    /*  } else{
-          if(that.board.checkVictory(0)){
-              console.log("1p won");
-              that.status = 1; 
-              that.markWin();
-              alert("Player One Has Won!");
-          }
-          
-          if(that.board.checkVictory(2)){
-              console.log("2p won");
-              that.status = 1; 
-              that.markWin();
-              alert("Player Two Has Won!");
-          }
-  
-      } */
     // Tie
     if (that.board.isFull()) {
         if(that.mode == 2){
+            console.log("Game won 1: " + that.round);
+            console.log("Board won 1: " + that.board.player);
              // Swap Rounds
              that.round = that.switchRound(that.round);
+             that.board.player = that.round;
+             console.log("Game won 2: " + that.round);
+             console.log("Board won 2: " + that.board.player);
         }
         that.status = 3;
         document.getElementById('winner-indicator').innerHTML = "Tie!";
@@ -416,15 +417,17 @@ Game.prototype.markWin = function () {
 Game.prototype.restartGame = function (depth) {
     // Get confirmation from the player that they want to restart the game for real
     if (confirm('Game is going to be restarted.\nAre you sure?')) {
+        console.log("Board 1: " + this.board.player);
+        console.log("Game 1: " + that.round);
+        console.log("First: " +  that.first);
         if(confirm('Would you like to swap turns? If Player 1 was first, agreeing would make he or her second.')){
             that.first = !that.first;
-            if (that.first) {
-                this.board.player = that.round;
-            } else {
-                this.board.player = that.switchRound(that.round);
-                that.round = that.switchRound(that.round);
-            }
+            that.round = that.switchRound(that.round);
+            this.board.player = that.round;
+            console.log("Board 2: " + this.board.player);
+            console.log("Game 2: " +that.round);
         }
+
         if (arguments.length != 0) {
             that.selectDifficulty(depth);
         }
@@ -435,6 +438,8 @@ Game.prototype.restartGame = function (depth) {
         this.resetVisuals();
         this.checkForComputerFirstMove();
         this.updateTurnIndicator();
+        console.log("Board 3: " +this.board.player);
+        console.log("Game 3: " +that.round);
     }
 }
 

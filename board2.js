@@ -58,77 +58,17 @@ Board.prototype.place = function (column) {
                 break;
             }
         }
+        console.log("SWITCH!");
+        console.log("Player board home 1: "  + this.player);
         // Swap the players for the board object. 
         this.player = this.game.switchRound(this.player);
+        console.log("Player board home 2: "  + this.player);
         // We placed a piece so return true that we could do that
         return true;
     } else {
         // We couldn't place the piece and therefore return false 
         return false;
     }
-}
-
-/**
- * Check if the param player has won. Return true if yes, return false if no.  
- *
- * @param {number} player
- * @return {boolean} 
- */
-Board.prototype.checkVictory = function (player) {
-    // horizontalCheck
-    for (var j = 0; j < this.columns - 3; j++) {
-        for (var i = 0; i < this.rows; i++) {
-            if (
-                this.field[i][j] === player &&
-                this.field[i][j + 1] === player &&
-                this.field[i][j + 2] === player &&
-                this.field[i][j + 3] === player
-            ) {
-
-                return true;
-            }
-        }
-    }
-    // verticalCheck
-    for (var i = 0; i < this.rows - 3; i++) {
-        for (var j = 0; j < this.columns; j++) {
-            if (
-                this.field[i][j] == player &&
-                this.field[i + 1][j] == player &&
-                this.field[i + 2][j] == player &&
-                this.field[i + 3][j] == player
-            ) {
-                return true;
-            }
-        }
-    }
-    // ascendingDiagonalCheck. Left bottom top right.
-    for (var i = 3; i < this.rows; i++) {
-        for (var j = 0; j < this.columns - 3; j++) {
-            if (
-                this.field[i][j] == player &&
-                this.field[i - 1][j + 1] == player &&
-                this.field[i - 2][j + 2] == player &&
-                this.field[i - 3][j + 3] == player
-            ) {
-                return true;
-            }
-        }
-    }
-    // descendingDiagonalCheck. Left top bottom right 
-    for (var i = 3; i < this.rows; i++) {
-        for (var j = 3; j < this.columns; j++) {
-            if (
-                this.field[i][j] == player &&
-                this.field[i - 1][j - 1] == player &&
-                this.field[i - 2][j - 2] == player &&
-                this.field[i - 3][j - 3] == player
-            ) {
-                return true;
-            }
-        }
-    }
-    return false;
 }
 
 /**
