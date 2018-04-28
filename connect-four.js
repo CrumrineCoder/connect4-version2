@@ -76,8 +76,10 @@ Game.prototype.checkForComputerFirstMove = function () {
     if (!that.first && that.mode == 1) {
         that.generateComputerFirstMoveDecision();
     } else{
-        that.round = 0; 
-        that.board.player = 0; 
+        if(that.mode == 1){
+           that.round = 0; 
+           that.board.player = 0; 
+        }
     }
 }
 
@@ -216,7 +218,7 @@ Game.prototype.switchRound = function (round) {
  * @param {boolean} first
  * @return {number}
  */
-Game.prototype.switcRestarthRound = function (first) {
+Game.prototype.switchRestartRound = function (first) {
     return this.mode == 1 ? (0) : (first ? 2 : 0);
 }
 
@@ -441,8 +443,8 @@ Game.prototype.restartGame = function (depth) {
     // Get confirmation from the player that they want to restart the game for real
     if (confirm('Game is going to be restarted.\nAre you sure?')) {
         if(confirm('Would you like to swap turns? If Player 1 was first, agreeing would make he or her second.')){
+            that.round = that.switchRestartRound(that.first);
             that.first = !that.first;
-            that.round = that.switcRestarthRound(that.first);
             this.board.player = that.round;
         }
 
