@@ -58,11 +58,8 @@ Board.prototype.place = function (column) {
                 break;
             }
         }
-        console.log("SWITCH!");
-        console.log("Player board home 1: "  + this.player);
         // Swap the players for the board object. 
         this.player = this.game.switchRound(this.player);
-        console.log("Player board home 2: "  + this.player);
         // We placed a piece so return true that we could do that
         return true;
     } else {

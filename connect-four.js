@@ -332,13 +332,6 @@ Game.prototype.updateStatus = function () {
         that.markWin();
         if (that.mode == 2) {
             document.getElementById('winner-indicator').innerHTML = "Player 1 Won!";
-            // Swap Rounds
-            console.log("Game won 1: " + that.round);
-            console.log("Board won 1: " + that.board.player);
-            that.round = that.switchRound(that.round);
-            that.board.player = that.round;
-            console.log("Game won 2: " + that.round);
-            console.log("Board won 2: " + that.board.player);
             //      alert("Player 1 Has Won!");
         } else {
             document.getElementById('winner-indicator').innerHTML = "You Won!";
@@ -353,13 +346,6 @@ Game.prototype.updateStatus = function () {
         that.markWin();
         if (that.mode == 2) {
             document.getElementById('winner-indicator').innerHTML = "Player 2 Won!";
-            console.log("Game won 1: " + that.round);
-            console.log("Board won 1: " + that.board.player);
-             // Swap Rounds
-             that.round = that.switchRound(that.round);
-             that.board.player = that.round;
-             console.log("Game won 2: " + that.round);
-             console.log("Board won 2: " + that.board.player);
             //      alert("Player 2 Has Won!");
         } else {
             document.getElementById('winner-indicator').innerHTML = "You lost.";
@@ -368,15 +354,6 @@ Game.prototype.updateStatus = function () {
     }
     // Tie
     if (that.board.isFull()) {
-        if(that.mode == 2){
-            console.log("Game won 1: " + that.round);
-            console.log("Board won 1: " + that.board.player);
-             // Swap Rounds
-             that.round = that.switchRound(that.round);
-             that.board.player = that.round;
-             console.log("Game won 2: " + that.round);
-             console.log("Board won 2: " + that.board.player);
-        }
         that.status = 3;
         document.getElementById('winner-indicator').innerHTML = "Tie!";
     }
@@ -417,29 +394,25 @@ Game.prototype.markWin = function () {
 Game.prototype.restartGame = function (depth) {
     // Get confirmation from the player that they want to restart the game for real
     if (confirm('Game is going to be restarted.\nAre you sure?')) {
-        console.log("Board 1: " + this.board.player);
-        console.log("Game 1: " + that.round);
-        console.log("First: " +  that.first);
+        that.first = !that.first;
+            that.round = that.switchRound(that.round);
+            this.board.player = that.round;
         if(confirm('Would you like to swap turns? If Player 1 was first, agreeing would make he or her second.')){
             that.first = !that.first;
             that.round = that.switchRound(that.round);
             this.board.player = that.round;
-            console.log("Board 2: " + this.board.player);
-            console.log("Game 2: " +that.round);
         }
 
         if (arguments.length != 0) {
             that.selectDifficulty(depth);
         }
         hideOptions();
-        this.board.createBoard();
-        this.createVisualBoard();
-        this.resetStatus();
-        this.resetVisuals();
-        this.checkForComputerFirstMove();
-        this.updateTurnIndicator();
-        console.log("Board 3: " +this.board.player);
-        console.log("Game 3: " +that.round);
+        that.board.createBoard();
+        that.createVisualBoard();
+        that.resetStatus();
+        that.resetVisuals();
+        that.checkForComputerFirstMove();
+        that.updateTurnIndicator();
     }
 }
 
