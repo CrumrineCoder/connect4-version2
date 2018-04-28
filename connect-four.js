@@ -205,7 +205,7 @@ Game.prototype.switchRound = function (round) {
  * @return {number}
  */
 Game.prototype.switcRestarthRound = function (first) {
-    return this.mode == 1 ? (first ? 1 : 0) : (first ? 2 : 0);
+    return this.mode == 1 ? (0) : (first ? 2 : 0);
 }
 
 
@@ -416,11 +416,17 @@ Game.prototype.markWin = function () {
 Game.prototype.restartGame = function (depth) {
     // Get confirmation from the player that they want to restart the game for real
     if (confirm('Game is going to be restarted.\nAre you sure?')) {
+        console.log("Board 1: " + that.board.player);
+        console.log("Game 1: " + that.round);
+        console.log(that.first);
         if(confirm('Would you like to swap turns? If Player 1 was first, agreeing would make he or her second.')){
             that.first = !that.first;
             that.round = that.switcRestarthRound(that.first);
             this.board.player = that.round;
         }
+        console.log("Board 2: " + that.board.player);
+        console.log("Game 2: " + that.round);
+        console.log(that.first);
 
         if (arguments.length != 0) {
             that.selectDifficulty(depth);
