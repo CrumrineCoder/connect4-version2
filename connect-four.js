@@ -72,9 +72,9 @@ Game.prototype.generateGame = function () {
 }
 
 Game.prototype.checkForComputerFirstMove = function () {
+    console.log(that.first);
     // If the player is going second and it's a single player game, then the AI makes its opening move. 
     if (!that.first && that.mode == 1) {
-        that.round = 1; 
         that.generateComputerDecision();
     }
 }
@@ -307,8 +307,14 @@ Game.prototype.generateComputerDecision = function () {
             var end = new Date().getTime() - start;
             document.getElementById('ai-time').innerHTML = end.toFixed(2) + 'ms';
 
+            that.round = 1; 
+            that.board.player = 1; 
+
             // Place ai decision
             that.place(ai_move[0]);
+
+            that.round = 0; 
+            that.board.player = 0; 
 
             // Debug
             document.getElementById('ai-column').innerHTML = parseInt(ai_move[0] + 1);
@@ -394,7 +400,7 @@ Game.prototype.markWin = function () {
 Game.prototype.restartGame = function (depth) {
     // Get confirmation from the player that they want to restart the game for real
     if (confirm('Game is going to be restarted.\nAre you sure?')) {
-        that.first = !that.first;
+    
             that.round = that.switchRound(that.round);
             this.board.player = that.round;
         if(confirm('Would you like to swap turns? If Player 1 was first, agreeing would make he or her second.')){
@@ -411,7 +417,9 @@ Game.prototype.restartGame = function (depth) {
         that.createVisualBoard();
         that.resetStatus();
         that.resetVisuals();
+        console.log(that.round);
         that.checkForComputerFirstMove();
+        console.log(that.round);
         that.updateTurnIndicator();
     }
 }
