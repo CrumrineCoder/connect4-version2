@@ -72,7 +72,6 @@ Game.prototype.generateGame = function () {
 }
 
 Game.prototype.checkForComputerFirstMove = function () {
-    console.log(that.first);
     // If the player is going second and it's a single player game, then the AI makes its opening move. 
     if (!that.first && that.mode == 1) {
         that.generateComputerDecision();
@@ -185,6 +184,16 @@ Game.prototype.selectMode = function (mode) {
  * @param {number} difficulty
  */
 Game.prototype.selectDifficulty = function (difficulty) {
+    $('input[name=difficulty-select]').attr('checked',false);
+    if(difficulty == 2){
+        document.getElementById('Passive').checked = true;
+    } else if(difficulty == 4){
+        document.getElementById('Easy').checked = true;
+    } else if (difficulty==6){
+        document.getElementById('Medium').checked = true;
+    } else{
+        document.getElementById('Hard').checked = true;
+    }
     this.depth = difficulty;
 }
 
@@ -219,10 +228,6 @@ Game.prototype.switcRestarthRound = function (first) {
  */
 Game.prototype.act = function (e) {
     var element = e.target || window.event.srcElement;
-    console.log("Board: " + that.board.player);
-    console.log("Game: " + that.round);
-    console.log(that.first);
-
     // Human round
     if (that.round == 0 || that.round == 2) {
         that.place(element.cellIndex);
@@ -280,7 +285,6 @@ Game.prototype.place = function (column) {
                         document.getElementById('game_board').rows[y].cells[column].className = 'coin red-coin';
                     }
                 }
-                console.log(this.board.field);
                 // Break from loop after inserting
                 break;
             }
@@ -419,17 +423,11 @@ Game.prototype.markWin = function () {
 Game.prototype.restartGame = function (depth) {
     // Get confirmation from the player that they want to restart the game for real
     if (confirm('Game is going to be restarted.\nAre you sure?')) {
-        console.log("Board 1: " + that.board.player);
-        console.log("Game 1: " + that.round);
-        console.log(that.first);
         if(confirm('Would you like to swap turns? If Player 1 was first, agreeing would make he or her second.')){
             that.first = !that.first;
             that.round = that.switcRestarthRound(that.first);
             this.board.player = that.round;
         }
-        console.log("Board 2: " + that.board.player);
-        console.log("Game 2: " + that.round);
-        console.log(that.first);
 
         if (arguments.length != 0) {
             that.selectDifficulty(depth);
@@ -439,9 +437,7 @@ Game.prototype.restartGame = function (depth) {
         that.createVisualBoard();
         that.resetStatus();
         that.resetVisuals();
-        console.log(that.round);
         that.checkForComputerFirstMove();
-        console.log(that.round);
         if(that.mode != 1){
          that.updateTurnIndicator();
         }
