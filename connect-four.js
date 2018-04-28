@@ -76,6 +76,9 @@ Game.prototype.checkForComputerFirstMove = function () {
     // If the player is going second and it's a single player game, then the AI makes its opening move. 
     if (!that.first && that.mode == 1) {
         that.generateComputerDecision();
+    } else{
+        that.round = 0; 
+        that.board.player = 0; 
     }
 }
 
