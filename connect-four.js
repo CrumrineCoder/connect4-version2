@@ -10,12 +10,12 @@ function Game() {
     this.status = 0; // 0: running, 1: won, 2: lost, 3: tie
     this.depth = 4; // Search depth
     this.score = 100000, // Win/loss score. 100000 = AI has won, -100000 = Player has won. 
-        this.winning_array = []; // Winning (chips) array
+    this.winning_array = []; // Winning (chips) array
     this.iterations = 0; // Iteration count
 
     this.round = 0; // 0: Human, 1: Computer
     this.mode = 1; // 1: Human vs AI, 2: Human vs Human
-    this.color = 1; // 0: Black = player 1, red = player 2 / AI; 1: Red vice versa.
+    this.color = 1; // 0: Black = player 1, red = player 2 / AI; 1: vice versa.
     this.first = true; // true if player 1 is going first, false if the AI/Player 2 is going first
 
     that = this;
@@ -43,9 +43,13 @@ Game.prototype.generateGame = function () {
     }
 
     if (that.first) {
-        this.round = that.round;
+        this.round = 0;
     } else {
-        this.round = that.switchRound(that.round);
+        if(this.mode == 1){
+            this.round = 1
+        } else{
+          this.round = 2;
+        }
     }
 
     this.board = new Board(this, [], this.round);
@@ -56,7 +60,7 @@ Game.prototype.generateGame = function () {
     if (that.mode == 1) {
         this.AI = new AI(this);
     } else {
-        this.resetTurnIndicator();
+        this.updateTurnIndicator();
     }
 
     this.checkForComputerFirstMove();
@@ -78,22 +82,6 @@ Game.prototype.resetStatus = function () {
     html.innerHTML = "running";
 }
 
-Game.prototype.resetTurnIndicator = function () {
-    if (that.round == 0) {
-        if (that.color == 0) {
-            document.getElementById("current-turn-indicator").className = 'coin black-coin';
-        } else {
-            document.getElementById("current-turn-indicator").className = 'coin red-coin';
-        }
-    }
-    else if (that.round == 2) {
-        if (that.color == 0) {
-            document.getElementById("current-turn-indicator").className = 'coin red-coin';
-        } else {
-            document.getElementById("current-turn-indicator").className = 'coin black-coin';
-        }
-    }
-}
 
 Game.prototype.resetVisuals = function () {
 
@@ -225,12 +213,18 @@ Game.prototype.act = function (e) {
 
 Game.prototype.updateTurnIndicator = function(){
     if (that.round == 0) {
-        document.getElementById("current-turn-indicator").className = 'coin red-coin';
-        //      document.getElementById().innerHTML = "First player's  turn";
+        if (that.color == 0) {
+            document.getElementById("current-turn-indicator").className = 'coin black-coin';
+        } else {
+            document.getElementById("current-turn-indicator").className = 'coin red-coin';
+        }
     }
     else if (that.round == 2) {
-        document.getElementById("current-turn-indicator").className = 'coin black-coin';
-        //      document.getElementById("current-turn-indicator").innerHTML = "Second player's  turn";
+        if (that.color == 0) {
+            document.getElementById("current-turn-indicator").className = 'coin red-coin';
+        } else {
+            document.getElementById("current-turn-indicator").className = 'coin black-coin';
+        }
     }
 }
 /**
