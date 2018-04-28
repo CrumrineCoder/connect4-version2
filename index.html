@@ -20,9 +20,9 @@
             <input type="radio" id="multiplayer-mode" name="game-mode-select" class="hidden" onclick="Game.selectMode(2)">
             <label for="multiplayer-mode">Local Multiplayer</label>
             <div class="reveal-if-active">
-                <input type="radio" id="passive" name="difficulty-select" onclick="Game.selectDifficulty(2)" class="require-if-active hidden"
+                <input type="radio" id="Passive" name="difficulty-select" onclick="Game.selectDifficulty(2)" class="require-if-active hidden"
                     data-require-pair="#singleplayer-mode">
-                <label for="passive">Passive</label>
+                <label for="Passive">Passive</label>
                 <input type="radio" id="Easy" name="difficulty-select" onclick="Game.selectDifficulty(4)" class=" require-if-active hidden"
                     data-require-pair="#singleplayer-mode" checked>
                 <label for="Easy">Easy</label>
@@ -47,7 +47,7 @@
             <label for="red">Player 1's chip is black</label>
         </div>
         <br />
-        <button onclick="Game.init(); toggleMenu();" class="">Start</button>
+        <button onclick="Game.generateGame(); toggleMenu();" class="">Start</button>
     </div>
     <div id="container" class="hide">
        

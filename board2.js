@@ -69,69 +69,6 @@ Board.prototype.place = function (column) {
 }
 
 /**
- * Check if the param player has won. Return true if yes, return false if no.  
- *
- * @param {number} player
- * @return {boolean} 
- */
-Board.prototype.checkVictory = function (player) {
-    // horizontalCheck
-    for (var j = 0; j < this.columns - 3; j++) {
-        for (var i = 0; i < this.rows; i++) {
-            if (
-                this.field[i][j] === player &&
-                this.field[i][j + 1] === player &&
-                this.field[i][j + 2] === player &&
-                this.field[i][j + 3] === player
-            ) {
-
-                return true;
-            }
-        }
-    }
-    // verticalCheck
-    for (var i = 0; i < this.rows - 3; i++) {
-        for (var j = 0; j < this.columns; j++) {
-            if (
-                this.field[i][j] == player &&
-                this.field[i + 1][j] == player &&
-                this.field[i + 2][j] == player &&
-                this.field[i + 3][j] == player
-            ) {
-                return true;
-            }
-        }
-    }
-    // ascendingDiagonalCheck. Left bottom top right.
-    for (var i = 3; i < this.rows; i++) {
-        for (var j = 0; j < this.columns - 3; j++) {
-            if (
-                this.field[i][j] == player &&
-                this.field[i - 1][j + 1] == player &&
-                this.field[i - 2][j + 2] == player &&
-                this.field[i - 3][j + 3] == player
-            ) {
-                return true;
-            }
-        }
-    }
-    // descendingDiagonalCheck. Left top bottom right 
-    for (var i = 3; i < this.rows; i++) {
-        for (var j = 3; j < this.columns; j++) {
-            if (
-                this.field[i][j] == player &&
-                this.field[i - 1][j - 1] == player &&
-                this.field[i - 2][j - 2] == player &&
-                this.field[i - 3][j - 3] == player
-            ) {
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
-/**
  * Return a score for various positions (either horizontal, vertical or diagonal by moving through our board).
  * Used by the AI to determine how to play the gamme. If this function was not here, then the variables would be meaningless to it.
  * @param {number} row
