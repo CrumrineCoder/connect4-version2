@@ -74,7 +74,7 @@ Game.prototype.generateGame = function () {
 Game.prototype.checkForComputerFirstMove = function () {
     // If the player is going second and it's a single player game, then the AI makes its opening move. 
     if (!that.first && that.mode == 1) {
-        that.generateComputerDecision();
+        that.generateComputerFirstMoveDecision();
     } else{
         that.round = 0; 
         that.board.player = 0; 
@@ -304,6 +304,23 @@ Game.prototype.place = function (column) {
 
        
     }
+}
+
+/**
+ * Handle the AI's first move depending on difficulty
+ */
+Game.prototype.generateComputerFirstMoveDecision = function () {
+    var that = this;
+    // If the game isn't over
+    if (that.board.score() != that.score && that.board.score() != -that.score && !that.board.isFull()) {
+        that.round = 1; 
+        that.board.player = 1; 
+        // Place ai decision
+        var decision = Math.floor(Math.random() * 7);
+        that.place(decision);
+        that.round = 0; 
+        that.board.player = 0; 
+    };
 }
 
 /**
