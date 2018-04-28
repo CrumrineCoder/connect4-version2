@@ -194,8 +194,20 @@ Game.prototype.selectDifficulty = function (difficulty) {
  * @return {number}
  */
 Game.prototype.switchRound = function (round) {
+    // If this.mode is equal to 1, which is singleplayer, then if round is equal to 0 then change it to 1, otherwise change it to 0
     return this.mode == 1 ? (round == 0 ? 1 : 0) : (round == 0 ? 2 : 0);
 }
+
+/**
+ * Switch turns depending who went first and on game mode
+ *
+ * @param {boolean} first
+ * @return {number}
+ */
+Game.prototype.switcRestarthRound = function (first) {
+    return this.mode == 1 ? (first ? 1 : 0) : (first ? 2 : 0);
+}
+
 
 /**
  * // This function is added as an event listener to the board. If it's the human's round then place wherever they clicked. If it's AI vs Human, and if it's the AI's turn, then generate a move for then.
@@ -204,6 +216,10 @@ Game.prototype.switchRound = function (round) {
  */
 Game.prototype.act = function (e) {
     var element = e.target || window.event.srcElement;
+    console.log("Board: " + that.board.player);
+    console.log("Game: " + that.round);
+    console.log(that.first);
+
     // Human round
     if (that.round == 0 || that.round == 2) {
         that.place(element.cellIndex);
@@ -400,12 +416,9 @@ Game.prototype.markWin = function () {
 Game.prototype.restartGame = function (depth) {
     // Get confirmation from the player that they want to restart the game for real
     if (confirm('Game is going to be restarted.\nAre you sure?')) {
-    
-            that.round = that.switchRound(that.round);
-            this.board.player = that.round;
         if(confirm('Would you like to swap turns? If Player 1 was first, agreeing would make he or her second.')){
             that.first = !that.first;
-            that.round = that.switchRound(that.round);
+            that.round = that.switcRestarthRound(that.first);
             this.board.player = that.round;
         }
 
@@ -420,7 +433,9 @@ Game.prototype.restartGame = function (depth) {
         console.log(that.round);
         that.checkForComputerFirstMove();
         console.log(that.round);
-        that.updateTurnIndicator();
+        if(that.mode != 1){
+         that.updateTurnIndicator();
+        }
     }
 }
 
