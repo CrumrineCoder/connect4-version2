@@ -46,6 +46,7 @@ input[type="radio"]:nth-child(1):checked ~ .reveal-if-active{
     position: absolute !important;
     width: 1px;
     overflow: hidden;
+    display: none; 
 }
 .switch-field label {
     float: left;
